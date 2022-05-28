@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import {
     getAuth,
-    createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
     onAuthStateChanged,
     signOut,
@@ -21,12 +20,6 @@ export const useAuth = () => {
     }, []);
 
     return currentUser;
-};
-
-// Signup function
-export const signup = async (email, password) => {
-    let user = await createUserWithEmailAndPassword(auth, email, password);
-    return user;
 };
 
 // Login function
