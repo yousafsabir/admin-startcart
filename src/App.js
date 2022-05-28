@@ -1,29 +1,51 @@
-import { useState, useEffect } from "react";
-import { db } from "./config/firebase.config";
-import { collection, onSnapshot } from "firebase/firestore";
-import { addFire, deleteFire, editFire } from "./CrudOps";
+import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
+import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import "./App.css";
+import { useAuth } from "./auth/Auth";
 
 function App() {
-    const [data, setData] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
-    useEffect(
-        () =>
-            onSnapshot(collection(db, "test"), (snapshot) => {
-                setData(
-                    snapshot.docs.map((doc) => {
-                        return { id: doc.id, data: doc.data() };
-                    })
-                );
-            }),
-        []
-    );
+    const isUser = useAuth();
+
+    console.log(isUser?.email);
+
+    const PublicRoute = ({ isUser, redirectPath = "/", children }) => {
+        if (isUser) {
+            return <Navigate to={redirectPath} replace />;
+        }
+
+        return children ? children : <Outlet />;
+    };
+
+    const PrivateRoute = ({ isUser, redirectPath = "/login", children }) => {
+        if (!isUser) {
+            return <Navigate to={redirectPath} replace />;
+        }
+
+        return children ? children : <Outlet />;
+    };
     return (
-        <div className="App">
-            <header className="App-header">Assalam u Alaikum</header>
-            <Login />
-        </div>
+        <>
+            <Routes>
+                <Route
+                    path="/"
+                    element={
+                        <PrivateRoute isUser={isUser}>
+                            <Home />
+                        </PrivateRoute>
+                    }
+                />
+
+                <Route
+                    path="/login"
+                    element={
+                        <PublicRoute isUser={isUser}>
+                            <Login />
+                        </PublicRoute>
+                    }
+                />
+            </Routes>
+        </>
     );
 }
 

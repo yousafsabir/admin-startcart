@@ -4,8 +4,8 @@ import {
     signInWithEmailAndPassword,
     onAuthStateChanged,
     signOut,
-    app,
 } from "firebase/auth";
+import app from "../config/firebase.config";
 
 // Initialize Firebase Authentication and get a reference to the service
 const auth = getAuth(app);
@@ -24,7 +24,8 @@ export const useAuth = () => {
 
 // Login function
 export const login = async (email, password) => {
-    return signInWithEmailAndPassword(auth, email, password);
+    let login = await signInWithEmailAndPassword(auth, email, password);
+    return login;
 };
 
 // logout function
