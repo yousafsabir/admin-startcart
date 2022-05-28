@@ -1,10 +1,26 @@
-import logo from "./logo.svg";
+import { useState, useEffect } from "react";
+import { db } from "./config/firebase.config";
+import { collection, onSnapshot } from "firebase/firestore";
+import { addFire, deleteFire, editFire } from "./CrudOps";
 import "./App.css";
 
 function App() {
+    const [data, setData] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    useEffect(
+        () =>
+            onSnapshot(collection(db, "test"), (snapshot) => {
+                setData(
+                    snapshot.docs.map((doc) => {
+                        return { id: doc.id, data: doc.data() };
+                    })
+                );
+            }),
+        []
+    );
     return (
         <div className="App">
-            <header className="App-header"></header>
+            <header className="App-header">Assalam u Alaikum</header>
         </div>
     );
 }
