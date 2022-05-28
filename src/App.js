@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { db } from "./config/firebase.config";
 import { collection, onSnapshot } from "firebase/firestore";
 import { addFire, deleteFire, editFire } from "./CrudOps";
+import Login from "./pages/login/Login";
 import "./App.css";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
     return (
         <div className="App">
             <header className="App-header">Assalam u Alaikum</header>
+            <Login />
         </div>
     );
 }
