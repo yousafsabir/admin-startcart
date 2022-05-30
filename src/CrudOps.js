@@ -1,4 +1,6 @@
 import { db } from "./config/firebase.config";
+import { storage } from "./config/firebase.config";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import {
     collection,
     doc,
@@ -11,8 +13,8 @@ import {
 } from "firebase/firestore";
 import { toast } from "react-toastify";
 
-const database = db;
 // CRUD Hooks
+const database = db;
 
 export const addFire = async (Collection, payload) => {
     try {
@@ -62,4 +64,15 @@ export const queryDeleteFire = async (Collection, signal) => {
     } catch (error) {
         console.log(error);
     }
+};
+
+// Storage hooks
+const fireStorage = storage;
+
+export const upload = async (userId, file, fileType) => {
+    try {
+        const fileRef = ref(fireStorage, "aasd." + fileType);
+        const snapshot = await uploadBytes(fileRef, file);
+        const photoUrl = await getDownloadURL(fileRef);
+    } catch (error) {}
 };

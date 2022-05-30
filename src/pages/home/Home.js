@@ -1,9 +1,10 @@
 import React from "react";
 import Navbar from "../../components/navbar/Navbar";
-import Sidebar from "../../components/sidebar/Sibebar";
+// import Sidebar from "../../components/sidebar/Sibebar";
 import Header from "../../components/header/Header";
 import { logout, useAuth } from "../../auth/Auth";
 import "./Home.css";
+import Profile from "./Profile";
 const Home = () => {
     const isUser = useAuth();
     const handleLogout = () => {
@@ -13,8 +14,8 @@ const Home = () => {
         <>
             <Navbar />
             <div className="home-cont">
-                <button onClick={() => handleLogout()}>logout</button>
-                <Sidebar className="sidebar" />
+                {/* {isUser && <Profile />} */}
+                {/* <Sidebar className="sidebar" /> */}
                 <Header className="header" />
             </div>
         </>
