@@ -1,13 +1,11 @@
 import Home from "./pages/home/Home";
 import Login from "./pages/login/Login";
+import { useSelector } from "react-redux";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import "./App.css";
-import { useAuth } from "./auth/Auth";
 
 function App() {
-    const isUser = useAuth();
-
-    console.log(isUser?.email);
+    const isUser = useSelector((state) => state.admin.isCurrent);
 
     const PublicRoute = ({ isUser, redirectPath = "/", children }) => {
         if (isUser) {
@@ -45,6 +43,8 @@ function App() {
                     }
                 />
             </Routes>
+            {/* <Login />
+            <Home /> */}
         </>
     );
 }

@@ -1,12 +1,15 @@
 import React from "react";
 import "./Navbar.css";
-import { useAuth, logout } from "../../auth/Auth";
+import { useSelector } from "react-redux";
+import { logout, useAuth } from "../../auth/Auth";
 
 const Navbar = () => {
-    const user = useAuth();
+    // const user = useAuth();
+    const user = useSelector((state) => state.admin.current);
 
     const handleLogout = () => {
-        logout();
+        // logout();
+        console.log(user);
     };
     return (
         <div

@@ -26,6 +26,7 @@
 .header-table {
     border-collapse: collapse;
     overflow: hidden;
+    margin: 0 auto;
 }
 .header-table td {
     padding: 20px;
