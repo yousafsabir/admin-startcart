@@ -11,9 +11,6 @@ import "./Login.css";
 const Login = () => {
     // gettin array of admins from store
     const admins = useSelector((state) => state.admin.all);
-    setTimeout(() => {
-        console.log(admins);
-    }, 5000);
     const dispatch = useDispatch();
     // dispatching admins to store
     useEffect(
@@ -40,6 +37,7 @@ const Login = () => {
     const handleLogin = async () => {
         try {
             setLoading(true);
+            console.log(admins);
             let result = await login(email, password);
             let isPresent = admins.findIndex(
                 (admin) => admin.uid === result.user.uid
