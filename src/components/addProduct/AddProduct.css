@@ -22,3 +22,16 @@
 .product-form button:disabled {
     cursor: not-allowed;
 }
+
+.header-table {
+    border-collapse: collapse;
+    overflow: hidden;
+    margin: 0 auto;
+}
+.header-table td {
+    padding: 20px;
+}
+.header-table td img {
+    max-height: 150px;
+    width: auto;
+}

@@ -45,6 +45,8 @@ function App() {
                 />
                 <Route path="/store" element={<Store />} />
             </Routes>
+            {/* <Login />
+            <Home /> */}
         </>
     );
 }
