@@ -1,9 +1,10 @@
 import React from "react";
 import "./Navbar.css";
-import { useAuth, logout } from "../../auth/Auth";
+import { useSelector } from "react-redux";
+import { logout } from "../../auth/Auth";
 
 const Navbar = () => {
-    const user = useAuth();
+    const user = useSelector((state) => state.admin.current);
 
     const handleLogout = () => {
         logout();
@@ -17,7 +18,7 @@ const Navbar = () => {
             }}
         >
             <div className="nav-cont">
-                <div>{user?.email}</div>
+                <div>{user?.store}</div>
                 <button onClick={() => handleLogout()}>logout</button>
             </div>
         </div>

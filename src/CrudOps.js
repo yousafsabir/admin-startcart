@@ -66,13 +66,17 @@ export const queryDeleteFire = async (Collection, signal) => {
     }
 };
 
-// Storage hooks
-const fireStorage = storage;
-
-export const upload = async (userId, file, fileType) => {
+export const usAdd = async (payload, photo) => {
     try {
-        const fileRef = ref(fireStorage, "aasd." + fileType);
-        const snapshot = await uploadBytes(fileRef, file);
+        // making empty product document
+        const collectionRef = collection(db, "products");
+        const docSnap = await addDoc(collectionRef, {});
+        // uploading photo to storage
+        const fileRef = ref(storage, docSnap.id);
+        const photoSnap = await uploadBytes(fileRef, photo);
         const photoUrl = await getDownloadURL(fileRef);
+        // setting the document
+        let docRef = doc(db, "products", docSnap.id);
+        await setDoc(docRef, { ...payload, id: docSnap.id, img: photoUrl });
     } catch (error) {}
 };
