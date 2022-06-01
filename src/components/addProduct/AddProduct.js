@@ -20,6 +20,13 @@ const AddProduct = () => {
 
     const isValid = photo && catagory && title && desc && price;
 
+    const clearValues = () => {
+        setCatagory(null);
+        setTitle("");
+        setDesc("");
+        setPrice(null);
+    };
+
     async function HandleAdd() {
         try {
             setIsLoading(true);
@@ -34,25 +41,7 @@ const AddProduct = () => {
                 },
                 photo
             );
-            // making empty product document
-            // const collectionRef = collection(db, "products");
-            // const docSnap = await addDoc(collectionRef, {});
-            // uploading photo to storage
-            // const fileRef = ref(storage, docSnap.id);
-            // const photoSnap = await uploadBytes(fileRef, photo);
-            // const photoUrl = await getDownloadURL(fileRef);
-            // setting the document
-            // let docRef = doc(db, "products", docSnap.id);
-            // await setDoc(docRef, {
-            //     id: docSnap.id,
-            //     store: currentAdmin?.store,
-            //     catagory,
-            //     img: photoUrl,
-            //     title,
-            //     desc,
-            //     price,
-            //     finalPrice: price,
-            // });
+            clearValues();
         } catch (error) {
             console.log(error);
         } finally {
@@ -68,6 +57,7 @@ const AddProduct = () => {
                         type="file"
                         name=""
                         id=""
+                        // value={photo}
                         onChange={(e) => {
                             setPhoto(e.target.files[0]);
                         }}
@@ -101,6 +91,7 @@ const AddProduct = () => {
                 <input
                     type="text"
                     placeholder="Enter the title"
+                    value={title}
                     onChange={(e) => {
                         setTitle(e.target.value);
                     }}
@@ -108,6 +99,7 @@ const AddProduct = () => {
                 <input
                     type="text"
                     placeholder="Enter the description"
+                    value={desc}
                     onChange={(e) => {
                         setDesc(e.target.value);
                     }}
@@ -115,6 +107,7 @@ const AddProduct = () => {
                 <input
                     type="number"
                     placeholder="Enter the price"
+                    value={price}
                     onChange={(e) => {
                         setPrice(e.target.value);
                     }}

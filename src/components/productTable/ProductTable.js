@@ -1,21 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { db } from "../../config/firebase.config";
 import { storage } from "../../config/firebase.config";
-import { collection, doc, deleteDoc, onSnapshot } from "firebase/firestore";
+import { doc, deleteDoc } from "firebase/firestore";
 import { ref, deleteObject } from "firebase/storage";
-import "./Header.css";
-const Header = () => {
-    const [data, setData] = useState([]);
-    useEffect(
-        () =>
-            onSnapshot(collection(db, "products"), (snapshot) => {
-                setData(
-                    snapshot.docs.map((doc) => {
-                        return doc.data();
-                    })
-                );
-            }),
-        []
+import "./ProductTable.css";
+
+const ProductTable = (props) => {
+    const filteredData = useSelector((state) =>
+        state.products.products.filter(
+            (product) => product.store === props.store
+        )
     );
 
     async function delDoc(id) {
@@ -30,18 +25,19 @@ const Header = () => {
         }
     }
     return (
-        <div>
-            <table className="header-table">
+        <div className="product-cont">
+            <h2>Listed Products</h2>
+            <table className="product-table">
                 <tbody>
-                    {data?.map((doc) => {
+                    {filteredData?.map((doc) => {
                         return (
                             <tr>
                                 <td>
-                                    <img src={doc.img} alt="" />
+                                    <img src={doc?.img} alt="" />
                                 </td>
-                                <td>{doc.title}</td>
-                                <td>{doc.desc}</td>
-                                <td>{doc.price}</td>
+                                <td>{doc?.title}</td>
+                                <td>{doc?.desc}</td>
+                                <td>{doc?.price}</td>
                                 <td>
                                     <button onClick={() => delDoc(doc.id)}>
                                         delete doc
@@ -56,4 +52,4 @@ const Header = () => {
     );
 };
 
-export default Header;
+export default ProductTable;

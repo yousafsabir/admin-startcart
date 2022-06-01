@@ -3,6 +3,7 @@ import Login from "./pages/login/Login";
 import { useSelector } from "react-redux";
 import { Routes, Route, Navigate, Outlet } from "react-router-dom";
 import "./App.css";
+import Store from "./components/store/Store";
 
 function App() {
     const isUser = useSelector((state) => state.admin.isCurrent);
@@ -42,9 +43,8 @@ function App() {
                         </PublicRoute>
                     }
                 />
+                <Route path="/store" element={<Store />} />
             </Routes>
-            {/* <Login />
-            <Home /> */}
         </>
     );
 }

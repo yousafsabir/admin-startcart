@@ -76,7 +76,10 @@ export const usAdd = async (payload, photo) => {
         const photoSnap = await uploadBytes(fileRef, photo);
         const photoUrl = await getDownloadURL(fileRef);
         // setting the document
+        let fullPayload = { ...payload, id: docSnap.id, img: photoUrl };
         let docRef = doc(db, "products", docSnap.id);
-        await setDoc(docRef, { ...payload, id: docSnap.id, img: photoUrl });
-    } catch (error) {}
+        await setDoc(docRef, fullPayload);
+    } catch (error) {
+        console.log(error);
+    }
 };

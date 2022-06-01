@@ -1,13 +1,29 @@
-import React from "react";
-import "./Navbar.css";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { db } from "../../config/firebase.config";
+import { onSnapshot, collection } from "firebase/firestore";
+import { useSelector, useDispatch } from "react-redux";
+import { removeCurrent } from "../../redux/slices/adminSlice";
+import { addProduct } from "../../redux/slices/productsSlice";
 import { logout } from "../../auth/Auth";
+import "./Navbar.css";
 
 const Navbar = () => {
-    const user = useSelector((state) => state.admin.current);
+    const dispatch = useDispatch();
+    const admin = useSelector((state) => state.admin.current);
+    // dispatching products to store
+    useEffect(
+        () =>
+            onSnapshot(collection(db, "products"), (snapshot) => {
+                snapshot.docs.map((doc) => {
+                    return dispatch(addProduct(doc.data()));
+                });
+            }),
+        [dispatch]
+    );
 
     const handleLogout = () => {
         logout();
+        dispatch(removeCurrent());
     };
     return (
         <div
@@ -18,7 +34,7 @@ const Navbar = () => {
             }}
         >
             <div className="nav-cont">
-                <div>{user?.store}</div>
+                <h2>{admin?.role === "admin" ? admin?.role : admin?.store}</h2>
                 <button onClick={() => handleLogout()}>logout</button>
             </div>
         </div>

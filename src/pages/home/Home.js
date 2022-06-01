@@ -1,23 +1,16 @@
 import React from "react";
 import Navbar from "../../components/navbar/Navbar";
-// import Sidebar from "../../components/sidebar/Sibebar";
-import Header from "../../components/header/Header";
-import { logout, useAuth } from "../../auth/Auth";
+import AllStores from "../../components/allStores/AllStores";
+import Store from "../../components/store/Store";
+import { useSelector } from "react-redux";
 import "./Home.css";
-import Profile from "./Profile";
 const Home = () => {
-    const isUser = useAuth();
-    const handleLogout = () => {
-        logout();
-    };
+    const admin = useSelector((state) => state.admin.current);
+
     return (
         <>
             <Navbar />
-            <div className="home-cont">
-                {/* {isUser && <Profile />} */}
-                {/* <Sidebar className="sidebar" /> */}
-                <Header className="header" />
-            </div>
+            {admin?.role === "admin" ? <AllStores /> : <Store />}
         </>
     );
 };

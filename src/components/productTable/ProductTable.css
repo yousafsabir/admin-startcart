@@ -1,0 +1,15 @@
+.product-cont h2 {
+    text-align: center;
+}
+.product-table {
+    border-collapse: collapse;
+    overflow: hidden;
+    margin: 0 auto;
+}
+.product-table td {
+    padding: 20px;
+}
+.product-table td img {
+    max-height: 150px;
+    width: auto;
+}
