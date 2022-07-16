@@ -4,6 +4,7 @@ import STATUSES from "./redux/Statuses";
 import AUTH from "./redux/AuthActions";
 import Spinner from "react-spinner-material";
 import { fetchAdmins, login } from "./redux/slices/AuthSlice";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -12,6 +13,12 @@ const Login = () => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [viewPass, setViewPass] = useState(false);
+
+  function toggleViewPass() {
+    setViewPass((prevValue) => !prevValue);
+  }
+
   useEffect(() => {
     if (status === STATUSES.IDLE) {
       clearValues();
@@ -58,19 +65,32 @@ const Login = () => {
       <main className="flex w-[350px] flex-col gap-3 rounded-md bg-gray-100 px-6 py-8">
         <h1 className="text-center text-3xl font-bold">Login</h1>
         <input
-          className="rounded p-1"
+          className="rounded p-1 outline-none"
           type="text"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
-        <input
-          className="rounded p-1"
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <div className="rounded p-1 bg-white w-full flex items-center">
+          <input
+            className="outline-none flex-1"
+            type={viewPass ? "text" : "password"}
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          {viewPass ? (
+            <AiOutlineEyeInvisible
+              onClick={toggleViewPass}
+              className="text-lg text-gray-500"
+            />
+          ) : (
+            <AiOutlineEye
+              onClick={toggleViewPass}
+              className="text-lg text-gray-500"
+            />
+          )}
+        </div>
         <button
           className="flex h-8 items-center justify-center rounded bg-gray-800 py-1 text-gray-100 active:scale-95 disabled:cursor-not-allowed"
           disabled={!email && !password}
