@@ -10,8 +10,6 @@ const Login = () => {
   const status = useSelector((state) => state.auth.status);
   const action = useSelector((state) => state.auth.action);
 
-  console.log("status:", status, "action:", action);
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   useEffect(() => {
