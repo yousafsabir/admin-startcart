@@ -7,109 +7,114 @@ import { fetchAdmins, login } from "./redux/slices/AuthSlice";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 
 const Login = () => {
-  const dispatch = useDispatch();
-  const status = useSelector((state) => state.auth.status);
-  const action = useSelector((state) => state.auth.action);
+    const dispatch = useDispatch();
+    const status = useSelector((state) => state.auth.status);
+    const action = useSelector((state) => state.auth.action);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [viewPass, setViewPass] = useState(false);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [viewPass, setViewPass] = useState(false);
 
-  function toggleViewPass() {
-    setViewPass((prevValue) => !prevValue);
-  }
-
-  useEffect(() => {
-    if (status === STATUSES.IDLE) {
-      clearValues();
+    function toggleViewPass() {
+        setViewPass((prevValue) => !prevValue);
     }
-  }, [status]);
 
-  useEffect(() => {
-    dispatch(fetchAdmins());
-  }, []);
+    useEffect(() => {
+        if (status === STATUSES.IDLE) {
+            clearValues();
+        }
+    }, [status]);
 
-  function clearValues() {
-    setEmail("");
-    setPassword("");
-  }
+    useEffect(() => {
+        dispatch(fetchAdmins());
+    }, []);
 
-  function handleLogin() {
-    dispatch(login({ email, password }));
-  }
+    function clearValues() {
+        setEmail("");
+        setPassword("");
+    }
 
-  if (action === AUTH.FETCHADMINS) {
-    return (
-      <div className="flex flex-col min-h-screen w-full items-center justify-center  gap-4 bg-slate-300">
-        {status === STATUSES.LOADING && (
-          <>
-            <h2 className="text-2xl font-bold text-gray-800 ">
-              Starting Admin Panel
-            </h2>
-            <div className="bg-slate-400 w-96 h-3 rounded-full overflow-hidden">
-              <div className="h-3 w-24 bg-blue-500 rounded-full animate-loading"></div>
+    function handleLogin() {
+        dispatch(login({ email, password }));
+    }
+
+    if (action === AUTH.FETCHADMINS) {
+        return (
+            <div className="flex flex-col min-h-screen w-full items-center justify-center  gap-4 bg-slate-300">
+                {status === STATUSES.LOADING && (
+                    <>
+                        <h2 className="text-2xl font-bold text-gray-800 ">
+                            Starting Admin Panel
+                        </h2>
+                        <div className="bg-slate-400 w-96 h-3 rounded-full overflow-hidden">
+                            <div className="h-3 w-24 bg-blue-500 rounded-full animate-loading"></div>
+                        </div>
+                    </>
+                )}
+                {status === STATUSES.ERROR && (
+                    <span className="text-center text-lg text-red-600 ">
+                        ☹ An error occoured. <br /> Refresh page or check your
+                        internet connection
+                    </span>
+                )}
             </div>
-          </>
-        )}
-        {status === STATUSES.ERROR && (
-          <span className="text-center text-lg text-red-600 ">
-            ☹ An error occoured. <br /> Refresh page or check your internet
-            connection
-          </span>
-        )}
-      </div>
-    );
-  }
-  return (
-    <div className="flex min-h-screen w-full items-center justify-center  bg-slate-300">
-      <main className="flex w-[350px] flex-col gap-3 rounded-md bg-gray-100 px-6 py-8">
-        <h1 className="text-center text-3xl font-bold">Login</h1>
-        <input
-          className="rounded p-1 outline-none"
-          type="text"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <div className="rounded p-1 bg-white w-full flex items-center">
-          <input
-            className="outline-none flex-1"
-            type={viewPass ? "text" : "password"}
-            placeholder="Password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          {viewPass ? (
-            <AiOutlineEyeInvisible
-              onClick={toggleViewPass}
-              className="text-lg text-gray-500"
-            />
-          ) : (
-            <AiOutlineEye
-              onClick={toggleViewPass}
-              className="text-lg text-gray-500"
-            />
-          )}
+        );
+    }
+    return (
+        <div className="flex min-h-screen w-full items-center justify-center  bg-slate-300">
+            <main className="flex w-[350px] flex-col gap-3 rounded-md bg-gray-100 px-6 py-8">
+                <h1 className="text-center text-3xl font-bold">Login</h1>
+                <input
+                    className="rounded p-1 outline-none"
+                    type="text"
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                <div className="rounded p-1 bg-white w-full flex items-center">
+                    <input
+                        className="outline-none flex-1"
+                        type={viewPass ? "text" : "password"}
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                    {viewPass ? (
+                        <AiOutlineEyeInvisible
+                            onClick={toggleViewPass}
+                            className="text-lg text-gray-500"
+                        />
+                    ) : (
+                        <AiOutlineEye
+                            onClick={toggleViewPass}
+                            className="text-lg text-gray-500"
+                        />
+                    )}
+                </div>
+                <button
+                    className="flex h-8 items-center justify-center rounded bg-gray-800 py-1 text-gray-100 active:scale-95 disabled:cursor-not-allowed"
+                    disabled={!email && !password}
+                    onClick={handleLogin}
+                >
+                    {status === STATUSES.LOADING ? (
+                        <Spinner
+                            radius={17}
+                            color={"#fff"}
+                            stroke={2}
+                            visible={true}
+                        />
+                    ) : (
+                        "Login"
+                    )}
+                </button>
+                {status === STATUSES.ERROR && (
+                    <span className="text-xs text-red-500 ">
+                        *An error occured, please try again
+                    </span>
+                )}
+            </main>
         </div>
-        <button
-          className="flex h-8 items-center justify-center rounded bg-gray-800 py-1 text-gray-100 active:scale-95 disabled:cursor-not-allowed"
-          disabled={!email && !password}
-          onClick={handleLogin}
-        >
-          {status === STATUSES.LOADING ? (
-            <Spinner radius={17} color={"#fff"} stroke={2} visible={true} />
-          ) : (
-            "Login"
-          )}
-        </button>
-        {status === STATUSES.ERROR && (
-          <span className="text-xs text-red-500 ">
-            *An error occured, please try again
-          </span>
-        )}
-      </main>
-    </div>
-  );
+    );
 };
 
 export default Login;
