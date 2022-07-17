@@ -28,15 +28,13 @@ const AddPd = () => {
     }, [status]);
 
     const [photo, setPhoto] = useState(undefined);
-    const [catagory, setCatagory] = useState(undefined);
+    const [catagory, setCatagory] = useState("");
     const [title, setTitle] = useState("");
     const [desc, setDesc] = useState("");
     const [price, setPrice] = useState(null);
 
-    console.log("photo:", photo, "type:", typeof photo);
-
-    const isValid = photo && catagory && title && price && desc;
-    console.log("isValid", isValid);
+    const isValid = Boolean(photo && catagory && title && price && desc);
+    console.log(catagory);
 
     function HandleAdd() {
         dispatch(
@@ -76,26 +74,13 @@ const AddPd = () => {
             <select
                 id="default"
                 className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 "
+                onChange={(e) => setCatagory(e.target.value)}
             >
                 <option defaultChecked className="text-gray-400">
                     Choose a catagory
                 </option>
-                <option
-                    value="food"
-                    onClick={(e) => {
-                        setCatagory(e.target.value);
-                    }}
-                >
-                    Food
-                </option>
-                <option
-                    value="electronics"
-                    onClick={(e) => {
-                        setCatagory(e.target.value);
-                    }}
-                >
-                    Electronics
-                </option>
+                <option value={"food"}>Food</option>
+                <option value={"electronics"}>Electronics</option>
             </select>
             <input
                 className="rounded p-2"
@@ -126,6 +111,7 @@ const AddPd = () => {
                 name=""
                 id=""
             />
+            {/* Reset button that resets file and catagory input */}
             <input type="reset" value="" ref={resetForm} className="w-0 h-0" />
             <button
                 className="flex h-10 w-36 items-center justify-center self-center rounded bg-white disabled:cursor-not-allowed disabled:bg-gray-400"
