@@ -25,11 +25,11 @@ const AddPd = () => {
         return clearValues;
     }, [status]);
 
-    const [photo, setPhoto] = useState(undefined);
-    const [catagory, setCatagory] = useState(undefined);
+    const [photo, setPhoto] = useState();
+    const [catagory, setCatagory] = useState();
     const [title, setTitle] = useState("");
     const [desc, setDesc] = useState("");
-    const [price, setPrice] = useState(undefined);
+    const [price, setPrice] = useState();
 
     const isValid = photo && catagory && title && desc && price;
 
