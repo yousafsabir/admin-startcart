@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Spinner from "react-spinner-material";
 import { useDispatch, useSelector } from "react-redux";
 import { addProduct } from "../redux/slices/PdSlice";
@@ -12,14 +12,16 @@ const AddPd = () => {
     const action = useSelector((store) => store.product.action);
     const storePath = `admins/${admin.storecode}/products`;
 
+    const resetForm = useRef(null);
+
     useEffect(() => {
         const clearValues = () => {
             if (status === STATUSES.IDLE) {
-                setPhoto();
-                setCatagory();
                 setTitle("");
                 setDesc("");
-                setPrice();
+                setPrice(null);
+                resetForm.current?.click();
+                console.log("form cleared");
             }
         };
         return clearValues;
@@ -29,9 +31,12 @@ const AddPd = () => {
     const [catagory, setCatagory] = useState(undefined);
     const [title, setTitle] = useState("");
     const [desc, setDesc] = useState("");
-    const [price, setPrice] = useState(undefined);
+    const [price, setPrice] = useState(null);
 
-    const isValid = photo && catagory && title && desc && price;
+    console.log("photo:", photo, "type:", typeof photo);
+
+    const isValid = photo && catagory && title && price && desc;
+    console.log("isValid", isValid);
 
     function HandleAdd() {
         dispatch(
@@ -51,7 +56,12 @@ const AddPd = () => {
         );
     }
     return (
-        <div className="mx-auto my-8 flex max-w-xl flex-col gap-4 rounded-md bg-gray-300 p-6 ">
+        <form
+            onSubmit={(e) => {
+                e.preventDefault();
+            }}
+            className="mx-auto my-8 flex max-w-xl flex-col gap-4 rounded-md bg-gray-300 p-6 "
+        >
             <span className="text-sm text-red-500">
                 *Image can't be changed later
             </span>
@@ -67,7 +77,9 @@ const AddPd = () => {
                 id="default"
                 className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 "
             >
-                <option defaultChecked>Choose a catagory</option>
+                <option defaultChecked className="text-gray-400">
+                    Choose a catagory
+                </option>
                 <option
                     value="food"
                     onClick={(e) => {
@@ -114,9 +126,11 @@ const AddPd = () => {
                 name=""
                 id=""
             />
+            <input type="reset" value="" ref={resetForm} className="w-0 h-0" />
             <button
                 className="flex h-10 w-36 items-center justify-center self-center rounded bg-white disabled:cursor-not-allowed disabled:bg-gray-400"
                 onClick={HandleAdd}
+                type="submit"
                 disabled={
                     status === STATUSES.LOADING || !isValid ? true : false
                 }
@@ -132,7 +146,7 @@ const AddPd = () => {
                     "Add Product"
                 )}
             </button>
-        </div>
+        </form>
     );
 };
 
