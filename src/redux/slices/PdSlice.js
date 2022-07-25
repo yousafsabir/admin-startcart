@@ -107,7 +107,7 @@ export default PdSlice.reducer;
 
 export const addProduct = createAsyncThunk("addProduct", async (arg) => {
     // making empty product document
-    const collectionRef = collection(db, arg.store);
+    const collectionRef = collection(db, arg.collection);
     const docSnap = await addDoc(collectionRef, {});
     // uploading photo to storage
     const fileRef = ref(storage, docSnap.id);
@@ -123,7 +123,7 @@ export const makeTrending = createAsyncThunk(
     "makeTrending",
     async (arg, thunkApi) => {
         thunkApi.dispatch(addId(arg.docId));
-        const docRef = doc(db, arg.store, arg.docId);
+        const docRef = doc(db, arg.collection, arg.docId);
         return await updateDoc(docRef, { trending: arg.payload });
     }
 );
@@ -132,15 +132,15 @@ export const deleteProduct = createAsyncThunk(
     "deleteProduct",
     async (arg, thunkApi) => {
         thunkApi.dispatch(addId(arg.docId));
-        const docRef = doc(db, arg.store, arg.docId);
+        const docRef = doc(db, arg.collection, arg.docId);
         await deleteDoc(docRef);
         const fileRef = ref(storage, arg.docId);
         await deleteObject(fileRef);
     }
 );
 
-export const saveEdit = createAsyncThunk("saveEdit", async (arg, thunkApi) => {
-    const docRef = doc(db, arg.store, arg.docId);
+export const saveEdit = createAsyncThunk("saveEdit", async (arg) => {
+    const docRef = doc(db, arg.collection, arg.docId);
     return await updateDoc(docRef, {
         title: arg.title,
         desc: arg.desc,

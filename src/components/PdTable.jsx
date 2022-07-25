@@ -1,4 +1,4 @@
-import { collection, onSnapshot } from "firebase/firestore";
+import { collection, query, onSnapshot, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { db } from "../firebase";
@@ -22,28 +22,35 @@ const PdTable = (props) => {
     const documentId = useSelector((state) => state.product.docId);
     const editMode = useSelector((state) => state.product.edit);
     const store = admin.storecode || props.storeprop;
-    const storePath = `admins/${store}/products`;
 
     const [products, setProducts] = useState([]);
 
+    console.log("store", store);
+
     useEffect(
         () =>
-            onSnapshot(collection(db, storePath), (snapshot) => {
-                setProducts(
-                    snapshot.docs.map((doc) => {
-                        return { ...doc.data() };
-                    })
-                );
-            }),
+            onSnapshot(
+                query(
+                    collection(db, "products"),
+                    where("storecode", "==", store)
+                ),
+                (snapshot) => {
+                    setProducts(
+                        snapshot.docs.map((doc) => {
+                            return { ...doc.data() };
+                        })
+                    );
+                }
+            ),
         [store]
     );
 
     const handleTrending = (docId, payload) => {
-        dispatch(makeTrending({ store: storePath, docId, payload }));
+        dispatch(makeTrending({ collection: "products", docId, payload }));
     };
 
     const handleDelete = (docId) => {
-        dispatch(deleteProduct({ store: storePath, docId }));
+        dispatch(deleteProduct({ collection: "products", docId }));
     };
 
     // states for edit
@@ -60,7 +67,9 @@ const PdTable = (props) => {
     };
 
     const handleEdit = (docId) => {
-        dispatch(saveEdit({ store: storePath, docId, title, desc, price }));
+        dispatch(
+            saveEdit({ collection: "products", docId, title, desc, price })
+        );
     };
 
     const cancelEdit = () => {

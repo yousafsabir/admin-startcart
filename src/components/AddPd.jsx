@@ -10,7 +10,6 @@ const AddPd = () => {
     const admin = useSelector((store) => store.auth.current);
     const status = useSelector((store) => store.product.status);
     const action = useSelector((store) => store.product.action);
-    const storePath = `admins/${admin.storecode}/products`;
 
     const resetForm = useRef(null);
 
@@ -39,14 +38,14 @@ const AddPd = () => {
     function HandleAdd() {
         dispatch(
             addProduct({
-                store: storePath,
+                collection: "products",
                 data: {
                     store: admin?.store,
+                    storecode: admin.storecode,
                     catagory,
                     title,
                     desc,
                     price,
-                    finalPrice: price,
                     trending: false,
                 },
                 photo,
