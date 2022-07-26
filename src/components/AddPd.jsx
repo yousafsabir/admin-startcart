@@ -47,6 +47,7 @@ const AddPd = () => {
                     desc,
                     price,
                     trending: false,
+		    createdAt: new Date(),
                 },
                 photo,
             })
