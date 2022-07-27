@@ -115,7 +115,7 @@ export const addProduct = createAsyncThunk("addProduct", async (arg) => {
     const photoUrl = await getDownloadURL(fileRef);
     // setting the document
     let fullPayload = { ...arg.data, id: docSnap.id, img: photoUrl };
-    let docRef = doc(db, arg.store, docSnap.id);
+    let docRef = doc(db, arg.collection, docSnap.id);
     await setDoc(docRef, fullPayload);
 });
 
