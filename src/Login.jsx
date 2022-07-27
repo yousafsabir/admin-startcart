@@ -46,8 +46,8 @@ const Login = () => {
                         <h2 className="text-2xl font-bold text-gray-800 ">
                             Starting Admin Panel
                         </h2>
-                        <div className="bg-slate-400 w-96 h-2 rounded-full overflow-hidden">
-                            <div className="h-2 w-24 bg-blue-500 rounded-full animate-loading"></div>
+                        <div className="bg-slate-400 w-96 h-1 rounded-full overflow-hidden">
+                            <div className="h-1 w-24 bg-blue-500 rounded-full animate-loading"></div>
                         </div>
                     </>
                 )}
